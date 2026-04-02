@@ -338,60 +338,6 @@ QUALITY REQUIREMENTS:
                 </GlassCard>
               )}
 
-              {/* Downloads Section */}
-              {result.downloads?.length > 0 && (
-                <GlassCard glowColor="violet" style={{ padding: '32px', marginBottom: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-                    <div style={{ padding: '12px', borderRadius: '12px', background: 'rgba(167,139,250,0.1)', boxShadow: '0 4px 12px rgba(167,139,250,0.1)' }}>
-                      <Download size={24} color="#a78bfa" />
-                    </div>
-                    <div>
-                      <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#fff' }}>Free Downloads & Media</h2>
-                      <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Curated PDFs, Videos, and Interactive Content</p>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
-                    {result.downloads.map((dl, i) => {
-                      const tc = DOWNLOAD_TYPES[dl.type] || DOWNLOAD_TYPES.wikipedia
-                      const Icon = tc.icon
-                      return (
-                        <motion.a key={i} href={dl.url} target="_blank" rel="noopener noreferrer"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          style={{
-                            display: 'flex', alignItems: 'flex-start', gap: '16px',
-                            padding: '20px', borderRadius: '16px',
-                            background: tc.bg, border: `1px solid ${tc.border}`,
-                            textDecoration: 'none', transition: 'all 0.3s ease',
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 8px 16px ${tc.bg}` }}
-                          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
-                        >
-                          <div style={{ padding: '12px', borderRadius: '12px', background: `${tc.color}25`, flexShrink: 0 }}>
-                            <Icon size={20} color={tc.color} />
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                              <p style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#fff' }}>{dl.title}</p>
-                            </div>
-                            <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5, marginBottom: '10px' }}>{dl.description}</p>
-                            <span style={{
-                              fontSize: '10px', padding: '4px 10px', borderRadius: '50px',
-                              background: `${tc.color}15`, color: tc.color,
-                              textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700,
-                            }}>
-                              {tc.label} {dl.source ? `· ${dl.source}` : ''}
-                            </span>
-                          </div>
-                        </motion.a>
-                      )
-                    })}
-                  </div>
-                </GlassCard>
-              )}
-
             </motion.div>
           )}
         </AnimatePresence>
