@@ -1,24 +1,24 @@
 export const sendToGemini = async (prompt, isJsonMode = false) => {
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY
-  if (!apiKey) throw new Error('OPENROUTER_API_KEY not configured. Check your .env file.')
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
+  if (!apiKey) throw new Error('VITE_GEMINI_API_KEY not configured. Check your .env file.')
   
   try {
     const res = await fetch(
-      'https://openrouter.ai/api/v1/chat/completions',
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "Healthcare-Aether-Vitalis"
         },
         body: JSON.stringify({
-          model: "openai/gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.7,
-          max_tokens: 2000,
-          top_p: 0.9
+          contents: [{
+            parts: [{ text: prompt }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 4000,
+            topP: 0.9
+          }
         }),
       }
     );
@@ -31,12 +31,12 @@ export const sendToGemini = async (prompt, isJsonMode = false) => {
     const data = await res.json();
 
     if (data.error) {
-      throw new Error(`OpenRouter error: ${data.error.message}`);
+      throw new Error(`Gemini API error: ${data.error.message}`);
     }
 
-    return data?.choices?.[0]?.message?.content || "No response from API";
+    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response from API";
   } catch (error) {
-    console.error('OpenRouter API call failed:', error);
+    console.error('Gemini API call failed:', error);
     throw error;
   }
 };

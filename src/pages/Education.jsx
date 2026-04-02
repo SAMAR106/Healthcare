@@ -7,34 +7,35 @@ import {
   GraduationCap, Search, BookOpen, Loader2,
   Download, ArrowRight, Brain, Atom,
   Calculator, Globe, Code, Palette, AlertCircle,
-  FileText, Video, Book, GitBranch, ExternalLink
+  FileText, Video, Book, GitBranch, ExternalLink,
+  Target, Lightbulb, Zap, HelpCircle, CheckCircle, Flame
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 
 const SUBJECTS = [
-  { id: 'math',    label: 'Mathematics', icon: Calculator, color: '#00F0FF' },
-  { id: 'science', label: 'Science',     icon: Atom,       color: '#34d399' },
-  { id: 'coding',  label: 'Programming', icon: Code,       color: '#a78bfa' },
-  { id: 'history', label: 'History',     icon: Globe,      color: '#fbbf24' },
-  { id: 'arts',    label: 'Arts',        icon: Palette,    color: '#fb7185' },
-  { id: 'general', label: 'General',     icon: Brain,      color: 'rgba(255,255,255,0.6)' },
+  { id: 'math', label: 'Mathematics', icon: Calculator, color: '#00F0FF' },
+  { id: 'science', label: 'Science', icon: Atom, color: '#34d399' },
+  { id: 'coding', label: 'Programming', icon: Code, color: '#a78bfa' },
+  { id: 'history', label: 'History', icon: Globe, color: '#fbbf24' },
+  { id: 'arts', label: 'Arts', icon: Palette, color: '#fb7185' },
+  { id: 'general', label: 'General', icon: Brain, color: 'rgba(255,255,255,0.6)' },
 ]
 
 const DOWNLOAD_TYPES = {
-  pdf:       { label: 'PDF',       color: '#fb7185', bg: 'rgba(251,113,133,0.1)',  border: 'rgba(251,113,133,0.2)',  icon: FileText   },
-  youtube:   { label: 'YouTube',   color: '#f87171', bg: 'rgba(248,113,113,0.1)',  border: 'rgba(248,113,113,0.2)',  icon: Video      },
-  course:    { label: 'Course',    color: '#34d399', bg: 'rgba(52,211,153,0.1)',   border: 'rgba(52,211,153,0.2)',   icon: GraduationCap },
-  wikipedia: { label: 'Wikipedia', color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.2)', icon: Book       },
-  github:    { label: 'GitHub',    color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.2)', icon: GitBranch  },
+  pdf: { label: 'PDF', color: '#fb7185', bg: 'rgba(251,113,133,0.1)', border: 'rgba(251,113,133,0.2)', icon: FileText },
+  youtube: { label: 'YouTube', color: '#f87171', bg: 'rgba(248,113,113,0.1)', border: 'rgba(248,113,113,0.2)', icon: Video },
+  course: { label: 'Course', color: '#34d399', bg: 'rgba(52,211,153,0.1)', border: 'rgba(52,211,153,0.2)', icon: GraduationCap },
+  wikipedia: { label: 'Wikipedia', color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.2)', icon: Book },
+  github: { label: 'GitHub', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.2)', icon: GitBranch },
 }
 
 export default function Education() {
-  const [query, setQuery]     = useState('')
+  const [query, setQuery] = useState('')
   const [subject, setSubject] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [result, setResult]   = useState(null)
-  const [error, setError]     = useState(null)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState(null)
 
   const formatMultiline = (text) => {
     if (!text) return null
@@ -76,56 +77,27 @@ export default function Education() {
 
 Subject: ${subject || 'General'} | User Question: "${query}"
 
-IMPORTANT: Respond ONLY with valid JSON (no markdown, code blocks, or explanatory text):
+IMPORTANT: Respond ONLY with valid JSON. You MUST escape all newlines as \\n within strings. Do NOT output raw newlines inside JSON string values:
 
 {
-  "learning_objectives": ["Objective 1", "Objective 2", "Objective 3"],
-  "explanation": "Comprehensive, detailed explanation (400-500 words). Include: definition, historical context, scientific/academic background, practical applications, real-world significance, industry relevance",
-  "key_concepts": ["Concept 1 with detailed context", "Concept 2 with definition", "Concept 3", "Concept 4", "Concept 5"],
-  "detailed_breakdown": [
-    {"section": "Introduction", "content": "Background and why this matters"},
-    {"section": "Core Concepts", "content": "Deep dive into main ideas"},
-    {"section": "Applications", "content": "Real-world uses and examples"}
-  ],
-  "examples": [
-    {"title": "Example 1", "description": "Real-world practical example with details"},
-    {"title": "Example 2", "description": "Industry/academic application"},
-    {"title": "Example 3", "description": "Case study with outcomes"}
-  ],
-  "common_mistakes": [
-    "Common misunderstanding 1 - why it's wrong",
-    "Frequent error 2 - how to avoid it",
-    "Misconception 3 - correct understanding"
+  "description": "Clear and direct overview of the topic (150-250 words). Focus ONLY on explaining what it is and why it matters. Do NOT include course details, practice questions, study tips, or learning objectives here. Use heavy Markdown formatting, bold keywords, and short paragraphs.",
+  "course_details": "Brief outline of a potential course or learning path. STRICT LIMIT: Keep it concise, maximum 4-5 short bullet points. MUST use heavy Markdown.",
+  "git_details": "Details about how this relates to Git, version control, or code repository commands/workflows. MUST use heavy Markdown with code blocks.",
+  "search_details": ["Search term 1", "Related topic 2", "Industry trend 3"],
+  "resources": [
+    {"title": "Documentation or Guide", "description": "Short reasoning", "url": "https://example.com/link"}
   ],
   "practice_questions": [
-    {"q": "Question 1", "a": "Answer with explanation"},
-    {"q": "Question 2", "a": "Answer with explanation"},
-    {"q": "Question 3", "a": "Answer with explanation"}
-  ],
-  "study_tips": "Provide 5+ specific, actionable study strategies including: active recall techniques, spaced repetition schedule, practice methods, memory aids, resources, and recommended learning timeline",
-  "summary": "Concise summary (100-150 words) covering key takeaways",
-  "resources": [
-    {"title": "Educational Platform", "description": "Detailed description of content", "url": "https://www.example.com"},
-    {"title": "Video Resource", "description": "What it teaches", "url": "https://www.youtube.com"},
-    {"title": "Research Material", "description": "Academic source", "url": "https://www.example.com"}
-  ],
-  "downloads": [
-    {"title": "Study Notes PDF", "description": "Complete notes with diagrams", "url": "https://example.com/notes.pdf", "type": "pdf", "source": "Educational Resource"},
-    {"title": "Tutorial Video", "description": "Visual step-by-step guide", "url": "https://www.youtube.com/search?q=${query}", "type": "youtube", "source": "YouTube"}
+    {"q": "Engaging question 1?", "a": "Detailed answer with Markdown formatting"},
+    {"q": "Technical question 2?", "a": "Detailed answer with Markdown formatting"}
   ]
 }
 
 QUALITY REQUIREMENTS:
-✓ Explanation: University-level, thorough, with multiple perspectives
-✓ Learning objectives: Specific, measurable outcomes
-✓ Concepts: 5 with meaningful depth
-✓ Examples: Specific, detailed, diverse applications
-✓ Common mistakes: Real misconceptions with corrections
-✓ Practice questions: 3 questions with full explanations
-✓ Study tips: 5+ actionable strategies with timeline
-✓ Summary: Concise recap of essentials
-✓ All content must be substantive and academic-quality
-✓ Use professional language and proper terminology`
+✓ ONLY output the requested 6 JSON keys. Do NOT generate extra headings like 'Study Tips', 'Common Mistakes', or 'Learning Objectives' inside the description!
+✓ All fields must be written in a highly engaging, beginner-friendly, and accessible way.
+✓ Tone: Warm, encouraging, enthusiastic, and highly readable.
+✓ Formatting: NEVER write large walls of text. Break everything into short, punchy paragraphs (1-3 sentences max). Use Markdown (bolding, lists, emojis) aggressively to make the content highly readable and visually spectacular.`
 
       const raw = await invokeLLM({ prompt })
 
@@ -147,24 +119,18 @@ QUALITY REQUIREMENTS:
 
       if (!parsed || parsed.error) {
         parsed = {
-          explanation: typeof raw === 'string' ? raw : (raw?.summary || 'Could not get a response. Please try again.'),
-          learning_objectives: [], key_concepts: [], examples: [], common_mistakes: [], 
-          practice_questions: [], study_tips: '', summary: '', resources: [], downloads: [],
-          detailed_breakdown: []
+          description: typeof raw === 'string' ? raw : 'Could not format response properly. Try again.',
+          course_details: '', git_details: '', search_details: [], practice_questions: [], resources: []
         }
       }
 
-      parsed.explanation  = parsed.explanation  || 'No explanation available.'
-      parsed.learning_objectives = Array.isArray(parsed.learning_objectives) ? parsed.learning_objectives : []
-      parsed.key_concepts = Array.isArray(parsed.key_concepts) ? parsed.key_concepts : []
-      parsed.examples     = Array.isArray(parsed.examples)     ? parsed.examples     : []
-      parsed.common_mistakes = Array.isArray(parsed.common_mistakes) ? parsed.common_mistakes : []
+      parsed.description = parsed.description || parsed.explanation || 'No description available.'
+      parsed.course_details = parsed.course_details || ''
+      parsed.git_details = parsed.git_details || ''
+      parsed.search_details = Array.isArray(parsed.search_details) ? parsed.search_details : []
       parsed.practice_questions = Array.isArray(parsed.practice_questions) ? parsed.practice_questions : []
-      parsed.detailed_breakdown = Array.isArray(parsed.detailed_breakdown) ? parsed.detailed_breakdown : []
-      parsed.summary = parsed.summary || ''
-      parsed.study_tips   = parsed.study_tips   || ''
-      parsed.resources    = Array.isArray(parsed.resources)    ? parsed.resources    : []
-      parsed.downloads    = Array.isArray(parsed.downloads)    ? parsed.downloads    : []
+      parsed.resources = Array.isArray(parsed.resources) ? parsed.resources : []
+
 
       setResult(parsed)
 
@@ -252,230 +218,177 @@ QUALITY REQUIREMENTS:
         {/* Results */}
         <AnimatePresence>
           {result && !loading && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
               {/* Explanation */}
-              <GlassCard glowColor="blue" style={{ marginBottom: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                  <BookOpen size={16} color="#00F0FF" />
-                  <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)' }}>Explanation</span>
+              <GlassCard glowColor="blue" style={{ position: 'relative', overflow: 'hidden', padding: '32px' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #00F0FF, #3b82f6)' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                  <div style={{ background: 'rgba(0, 240, 255, 0.1)', padding: '12px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 240, 255, 0.1)' }}>
+                    <BookOpen size={24} color="#00F0FF" />
+                  </div>
+                  <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#fff', letterSpacing: '0.02em' }}>Detailed Description</h2>
                 </div>
-                <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.7 }}>
-                  <ReactMarkdown>{result.explanation}</ReactMarkdown>
+                <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85, fontWeight: 400, letterSpacing: '0.01em' }}>
+                  <ReactMarkdown>{result.description}</ReactMarkdown>
                 </div>
               </GlassCard>
 
-              {/* Learning Objectives */}
-              {result.learning_objectives?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px', borderLeft: '3px solid #00F0FF' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(0,240,255,0.7)', marginBottom: '12px', fontWeight: 700 }}>📚 Learning Objectives</p>
-                  {result.learning_objectives.map((obj, i) => (
-                    <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '10px', padding: '10px', background: 'rgba(0,240,255,0.05)', borderRadius: '8px' }}>
-                      <span style={{ color: '#00F0FF', fontSize: '14px', fontWeight: 'bold', flexShrink: 0 }}>✓</span>
-                      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{obj}</p>
-                    </div>
-                  ))}
+              {/* Course Details */}
+              {result.course_details && (
+                <GlassCard style={{ padding: '24px', borderTop: '2px solid rgba(52, 211, 153, 0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                    <GraduationCap size={20} color="#34d399" />
+                    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#fff' }}>Course Details & Path</h3>
+                  </div>
+                  <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85, '& pre': { background: 'rgba(0,0,0,0.3)', padding: '12px', borderRadius: '8px' }, '& code': { color: '#fbcfe8' } }}>
+                    <ReactMarkdown>{result.course_details}</ReactMarkdown>
+                  </div>
                 </GlassCard>
               )}
 
-              {/* Common Mistakes & Tips */}
-              {result.common_mistakes?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px', borderLeft: '3px solid #fb7185' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(251,113,133,0.7)', marginBottom: '12px', fontWeight: 700 }}>⚠️ Common Mistakes</p>
-                  {result.common_mistakes.map((mistake, i) => (
-                    <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '10px', padding: '10px', background: 'rgba(251,113,133,0.05)', borderRadius: '8px', borderLeft: '2px solid #fb7185' }}>
-                      <span style={{ color: '#fb7185', fontSize: '14px', fontWeight: 'bold', flexShrink: 0 }}>!</span>
-                      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{mistake}</p>
-                    </div>
-                  ))}
+              {/* Git Details */}
+              {result.git_details && (
+                <GlassCard style={{ padding: '24px', borderTop: '2px solid rgba(167, 139, 250, 0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                    <GitBranch size={20} color="#a78bfa" />
+                    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#fff' }}>Git & Version Control Context</h3>
+                  </div>
+                  <div style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.85, '& pre': { background: 'rgba(0,0,0,0.3)', padding: '12px', borderRadius: '8px' }, '& code': { color: '#fbcfe8' } }}>
+                    <ReactMarkdown>{result.git_details}</ReactMarkdown>
+                  </div>
+                </GlassCard>
+              )}
+
+              {/* Search Details */}
+              {result.search_details?.length > 0 && (
+                <GlassCard style={{ padding: '24px', borderTop: '2px solid rgba(251, 191, 36, 0.3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                    <Search size={18} color="#fbbf24" />
+                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#fff' }}>Related Search Details</h3>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    {result.search_details.map((c, i) => (
+                      <span key={i} style={{
+                          padding: '8px 16px', borderRadius: '50px',
+                          background: 'rgba(251, 191, 36, 0.1)',
+                          border: '1px solid rgba(251, 191, 36, 0.2)',
+                          color: '#fef3c7', fontSize: '13px', fontWeight: 500,
+                        }}>
+                        <Search size={12} style={{ display: 'inline', marginRight: '6px', marginBottom: '-2px' }} />
+                        {c}
+                      </span>
+                    ))}
+                  </div>
                 </GlassCard>
               )}
 
               {/* Practice Questions */}
               {result.practice_questions?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px', borderLeft: '3px solid #34d399' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(52,211,153,0.7)', marginBottom: '12px', fontWeight: 700 }}>❓ Practice Questions</p>
-                  {result.practice_questions.map((pq, i) => (
-                    <details key={i} style={{ marginBottom: '10px', padding: '10px', background: 'rgba(52,211,153,0.05)', borderRadius: '8px', borderLeft: '2px solid #34d399', cursor: 'pointer' }}>
-                      <summary style={{ fontSize: '13px', color: '#34d399', fontWeight: 600, listStyle: 'none' }}>
-                        <span style={{ marginRight: '10px' }}>Q{i + 1}:</span>{pq.q}
-                      </summary>
-                      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '10px', paddingLeft: '12px', borderLeft: '2px solid rgba(52,211,153,0.3)' }}>{pq.a}</p>
-                    </details>
-                  ))}
-                </GlassCard>
-              )}
-
-              {/* Summary */}
-              {result.summary && (
-                <GlassCard style={{ marginBottom: '16px', background: 'linear-gradient(135deg, rgba(251,191,36,0.05), rgba(167,139,250,0.05))', borderLeft: '3px solid #fbbf24' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(251,191,36,0.7)', marginBottom: '12px', fontWeight: 700 }}>📝 Summary</p>
-                  <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>{result.summary}</p>
-                </GlassCard>
-              )}
-
-              {/* Key Concepts */}
-              {result.key_concepts?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(167,139,250,0.6)', marginBottom: '12px' }}>Key Concepts</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {result.key_concepts.map((c, i) => (
-                      <span key={i} style={{ padding: '6px 12px', borderRadius: '50px', background: 'rgba(167,139,250,0.1)', color: '#c4b5fd', fontSize: '12px' }}>{c}</span>
-                    ))}
+                <GlassCard style={{ padding: '24px', position: 'relative', overflow: 'hidden', borderTop: '2px solid rgba(236, 72, 153, 0.3)' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'linear-gradient(to bottom, #ec4899, #8b5cf6)' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingLeft: '16px' }}>
+                    <HelpCircle size={20} color="#ec4899" />
+                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#fff' }}>Practice Questions</h2>
                   </div>
-                </GlassCard>
-              )}
-
-              {/* Detailed Breakdown */}
-              {result.detailed_breakdown?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px', borderLeft: '3px solid rgba(0,240,255,0.8)' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(0,240,255,0.6)', marginBottom: '12px' }}>Detailed Breakdown</p>
-                  <div style={{ display: 'grid', gap: '12px' }}>
-                    {result.detailed_breakdown.map((item, index) => (
-                      <div key={index} style={{ padding: '14px', borderRadius: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                        <p style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.85)', marginBottom: '8px' }}>{item.section}</p>
-                        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, margin: 0 }}>{item.content}</p>
-                      </div>
-                    ))}
-                  </div>
-                </GlassCard>
-              )}
-
-              {/* Examples */}
-              {result.examples?.length > 0 && (
-                <GlassCard style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(52,211,153,0.6)', marginBottom: '12px' }}>Examples</p>
-                  <div style={{ display: 'grid', gap: '12px' }}>
-                    {result.examples.map((ex, i) => {
-                      const title = ex?.title || `Example ${i + 1}`
-                      const description = ex?.description || (typeof ex === 'string' ? ex : '')
-                      return (
-                        <div key={i} style={{ display: 'flex', gap: '14px', padding: '14px', borderRadius: '14px', background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.15)' }}>
-                          <div style={{ minWidth: '32px', minHeight: '32px', borderRadius: '12px', background: 'rgba(52,211,153,0.15)', color: '#34d399', fontWeight: 700, display: 'grid', placeItems: 'center' }}>{i + 1}</div>
-                          <div>
-                            <p style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(255,255,255,0.85)', marginBottom: '6px' }}>{title}</p>
-                            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, margin: 0 }}>{description}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '16px' }}>
+                    {result.practice_questions.map((pq, i) => (
+                      <details key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                        <summary style={{ fontSize: '15px', color: '#fbcfe8', fontWeight: 600, listStyle: 'none', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                          <span style={{ color: '#ec4899', background: 'rgba(236, 72, 153, 0.1)', padding: '2px 8px', borderRadius: '4px', fontSize: '12px' }}>Q{i + 1}</span>
+                          <span style={{ flex: 1, marginTop: '1px' }}>{pq.q}</span>
+                        </summary>
+                        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingLeft: '44px' }}>
+                          <div style={{ margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.7 }}>
+                            <strong style={{ color: '#ec4899', display: 'block', marginBottom: '8px' }}>Answer: </strong>
+                            <ReactMarkdown>{pq.a}</ReactMarkdown>
                           </div>
                         </div>
-                      )
-                    })}
+                      </details>
+                    ))}
                   </div>
-                </GlassCard>
-              )}
-
-              {/* Study Tips */}
-              {result.study_tips && (
-                <GlassCard style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(251,191,36,0.6)', marginBottom: '12px' }}>Study Tips</p>
-                  {formatMultiline(result.study_tips)}
                 </GlassCard>
               )}
 
               {/* Resources */}
               {result.resources?.length > 0 && (
-                <GlassCard glowColor="blue" style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(0,240,255,0.6)', marginBottom: '12px' }}>Resources</p>
-                  {result.resources.map((r, i) => (
-                    <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '12px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '8px', textDecoration: 'none' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,240,255,0.04)'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
-                    >
-                      <Download size={16} color="#00F0FF" style={{ marginTop: '2px', flexShrink: 0 }} />
-                      <div style={{ flex: 1 }}>
-                        <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>{r.title}</p>
-                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '2px' }}>{r.description}</p>
-                        <p style={{ fontSize: '11px', color: 'rgba(0,240,255,0.5)', marginTop: '4px' }}>{r.url}</p>
-                      </div>
-                      <ArrowRight size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                    </a>
-                  ))}
+                <GlassCard glowColor="blue" style={{ padding: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                    <ExternalLink size={18} color="#00F0FF" />
+                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#fff' }}>Recommended Resources</h3>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {result.resources.map((r, i) => (
+                      <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
+                        style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', textDecoration: 'none', transition: 'all 0.2s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,240,255,0.05)'; e.currentTarget.style.border = '1px solid rgba(0,240,255,0.2)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.border = '1px solid rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(0)' }}
+                      >
+                        <div style={{ background: 'rgba(0, 240, 255, 0.1)', padding: '10px', borderRadius: '50%' }}>
+                          <ExternalLink size={16} color="#00F0FF" />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <p style={{ margin: 0, fontSize: '15px', color: '#fff', fontWeight: 600, marginBottom: '4px' }}>{r.title}</p>
+                          <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.5)' }}>{r.description}</p>
+                        </div>
+                        <ArrowRight size={18} color="rgba(255,255,255,0.2)" />
+                      </a>
+                    ))}
+                  </div>
                 </GlassCard>
               )}
 
-              {/* ── FREE DOWNLOADS — NEW SECTION ── */}
+              {/* Downloads Section */}
               {result.downloads?.length > 0 && (
-                <GlassCard glowColor="violet" style={{ marginBottom: '32px' }}>
-
-                  {/* Header */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                    <div style={{ padding: '8px', borderRadius: '10px', background: 'rgba(167,139,250,0.1)' }}>
-                      <Download size={16} color="#a78bfa" />
+                <GlassCard glowColor="violet" style={{ padding: '32px', marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                    <div style={{ padding: '12px', borderRadius: '12px', background: 'rgba(167,139,250,0.1)', boxShadow: '0 4px 12px rgba(167,139,250,0.1)' }}>
+                      <Download size={24} color="#a78bfa" />
                     </div>
                     <div>
-                      <p style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>Free Downloads</p>
-                      <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>PDFs · Videos · Courses · Wikipedia · GitHub</p>
+                      <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#fff' }}>Free Downloads & Media</h2>
+                      <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Curated PDFs, Videos, and Interactive Content</p>
                     </div>
                   </div>
 
-                  {/* Type legend */}
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '14px' }}>
-                    {Object.entries(DOWNLOAD_TYPES).map(([key, val]) => (
-                      <span key={key} style={{
-                        display: 'flex', alignItems: 'center', gap: '4px',
-                        padding: '4px 10px', borderRadius: '50px',
-                        background: val.bg, border: `1px solid ${val.border}`,
-                        fontSize: '10px', color: val.color,
-                      }}>
-                        <val.icon size={10} />{val.label}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Download items */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
                     {result.downloads.map((dl, i) => {
                       const tc = DOWNLOAD_TYPES[dl.type] || DOWNLOAD_TYPES.wikipedia
                       const Icon = tc.icon
                       return (
                         <motion.a key={i} href={dl.url} target="_blank" rel="noopener noreferrer"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.07 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.05 }}
                           style={{
-                            display: 'flex', alignItems: 'flex-start', gap: '12px',
-                            padding: '14px', borderRadius: '14px',
+                            display: 'flex', alignItems: 'flex-start', gap: '16px',
+                            padding: '20px', borderRadius: '16px',
                             background: tc.bg, border: `1px solid ${tc.border}`,
-                            textDecoration: 'none', transition: 'all 0.2s',
+                            textDecoration: 'none', transition: 'all 0.3s ease',
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.filter = 'brightness(1.2)' }}
-                          onMouseLeave={e => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.filter = 'brightness(1)' }}
+                          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 8px 16px ${tc.bg}` }}
+                          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
                         >
-                          <div style={{ padding: '10px', borderRadius: '10px', background: `${tc.color}20`, flexShrink: 0 }}>
-                            <Icon size={18} color={tc.color} />
+                          <div style={{ padding: '12px', borderRadius: '12px', background: `${tc.color}25`, flexShrink: 0 }}>
+                            <Icon size={20} color={tc.color} />
                           </div>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
-                              <p style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}>{dl.title}</p>
-                              <span style={{
-                                fontSize: '9px', padding: '2px 8px', borderRadius: '50px',
-                                background: `${tc.color}20`, color: tc.color,
-                                textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, flexShrink: 0,
-                              }}>
-                                {tc.label}
-                              </span>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                              <p style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: '#fff' }}>{dl.title}</p>
                             </div>
-                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.5, marginBottom: '6px' }}>{dl.description}</p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                              {dl.source && (
-                                <span style={{ fontSize: '10px', color: tc.color, background: `${tc.color}15`, padding: '2px 8px', borderRadius: '50px', fontWeight: 600 }}>
-                                  {dl.source}
-                                </span>
-                              )}
-                              <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>
-                                {dl.url}
-                              </span>
-                            </div>
+                            <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5, marginBottom: '10px' }}>{dl.description}</p>
+                            <span style={{
+                              fontSize: '10px', padding: '4px 10px', borderRadius: '50px',
+                              background: `${tc.color}15`, color: tc.color,
+                              textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700,
+                            }}>
+                              {tc.label} {dl.source ? `· ${dl.source}` : ''}
+                            </span>
                           </div>
-                          <ExternalLink size={15} color={tc.color} style={{ flexShrink: 0, marginTop: '4px', opacity: 0.6 }} />
                         </motion.a>
                       )
                     })}
                   </div>
-
-                  <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)', textAlign: 'center', marginTop: '14px', lineHeight: 1.6 }}>
-                    ℹ All links open in a new tab. PDF links are freely available documents.
-                  </p>
                 </GlassCard>
               )}
 
