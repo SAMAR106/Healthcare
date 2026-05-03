@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    allowedHosts: ['all','healthcare-x2cv.onrender.com'],
+    allowedHosts: ['all','healthcare-oo0s.onrender.com'],
   },
   define: {
     'process.env': {}
